@@ -33,9 +33,18 @@ def _get_global_gloo_group():
 
 # needed due to empty tensor bug in pytorch and torchvision 0.5
 import torchvision
-if float(torchvision.__version__[:3]) < 0.7:
+version = torchvision.__version__
+tok_version = version.split(".")
+my_version = tok_version[1]
+my_version = float(my_version)
+#print("Tensorflow:", torchvision.__version__)
+#print("Torchvision:", my_version)
+
+#if float(torchvision.__version__[:3]) < 0.7:
+if my_version < 7:
     from torchvision.ops import _new_empty_tensor
     from torchvision.ops.misc import _output_size
+
 
 
 class SmoothedValue(object):
