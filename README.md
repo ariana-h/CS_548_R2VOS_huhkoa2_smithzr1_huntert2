@@ -11,7 +11,7 @@
 # Install
 
 ```
-conda install pytorch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1 -c pytorch
+pip install torch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt 
 pip install 'git+https://github.com/facebookresearch/fvcore' 
 pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
@@ -19,6 +19,8 @@ cd models/ops
 python setup.py build install
 cd ../..
 ```
+
+Using CUDA version: cuda_11.7.r11.7/compiler.31294372_0
 
 # Docker
 You may try [docker](https://hub.docker.com/r/ang9867/refer) to quick start.
