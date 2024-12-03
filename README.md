@@ -33,6 +33,12 @@ Inference on images in the demo/demo_examples.
 ```
 python demo.py --with_box_refine --binary --freeze_text_encoder --output_dir=output/demo --resume=checkpoint.pth --backbone resnet50 --ngpu 1 --use_cycle --mix_query --neg_cls --is_eval --use_cls --demo_exp 'a big track on the road' --demo_path 'demo/demo_examples'
 ```
+# Data Setup
+The surf and hockey data subsets were taken from the Ref-DAVIS17 dataset installation instructions found at: https://github.com/wudongming97/OnlineRefer/blob/master/docs/data.md.
+
+The dog_13 data subset was taken from the dog subset of the dataset found at: https://huggingface.co/datasets/l-lt/LaSOT.
+
+Necessary data used to evaluate the model can be found in the demo/ folder.
 
 # Evaluate Model
 Evaluate model on surf data.
