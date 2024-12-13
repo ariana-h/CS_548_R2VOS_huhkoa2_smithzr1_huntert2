@@ -1,0 +1,167 @@
+VITA:
+Issues with installing pytorch version, had to get website install line but couldn't install their wanted version of cuda had to use 12.1
+Didn't use default system variable path for CUDA had to make a new one named "CUDA_HOME" instead of default "CUDA PATH"
+
+ C:\Users\Zach\VITA\mask2former\modeling\pixel_decoder\ops>sh make.sh
+make.sh: line 9: $'\r': command not found
+make.sh: line 12: $'\r': command not found
+'nvalid command name 'install
+
+Installed dos2linux to fix this error
+
+tried to run evaluation
+python train_net_vita.py \
+  --config-file configs/youtubevis_2019/vita_R50_bs8.yaml \
+  --eval-only MODEL.WEIGHTS vita_r50_coco.pth
+
+Got an error saying MODEL.WEIGHTS is an unknown command
+
+Since CUDA was detected with the new path name, I decided to go back to R2VOS to see if it would work with this new path name and it did, kept going forward with R2VOS
+
+
+
+
+OnlineRefer:
+Same errors as R2vos because they both redlied on referFormer
+note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for pycocotools
+
+'Cuda is not availabel' Error
+
+Once I got Cuda detected I kept going forward with R2VOS instead of OnlineRefer
+
+
+
+R2VOS:
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for pycocotools
+
+had to install from alternate source
+pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+
+torchvision and PIL packages not detected DLL load failed: The specified module could not be found.
+
+torchvision version wanted not available
+ The following packages are not available from current channels:
+
+  - torchvision==0.9.1
+
+No current channels on anaconda.org search for version
+
+installed current torchvision version, 
+
+
+'Cuda is not availabel' Error
+I had cuda and cuda toolkit installed. added pytorch-cuda=11.8 to pytorch install command still got this error. When working with VITA it told me to change the CUDA path name to CUDA_HOME instead of the default path name of CUDA_PATH and I decided to go back to R2VOS to see if this is why CUDA wasn't being detected and it was.
+
+
+ImportError: cannot import name 'COMMON_SAFE_ASCII_CHARACTERS' from 'charset_normalizer.constant' (C:\Users\Zach\anaconda3\envs\referOnline\lib\site-packages\charset_normalizer\constant.py)
+
+saw people advise to install chardet
+
+ModuleNotFoundError: No module named 'torch.ao'
+
+making new environment on python3.7
+
+ModuleNotFoundError: No module named 'sklearn'
+never told to install sklearn, installed it
+
+
+ModuleNotFoundError: No module named 'torch.ao'
+had to change every instance of from torch.ao.quantization to from torch.quantization
+
+
+from torchvision.ops import _new_empty_tensor
+ImportError: cannot import name '_new_empty_tensor' from 'torchvision.ops' (C:\Users\Zach\anaconda3\envs\referOnline\lib\site-packages\torchvision\ops\__init__.py)
+
+# needed due to empty tensor bug in pytorch and torchvision 0.5
+
+not using this version for either, going to try commenting them out
+
+
+
+ModuleNotFoundError: No module named 'torchvision.models.utils'
+had to change to torch.hub
+
+
+
+from sklearn.decomposition import PCA
+ModuleNotFoundError: No module named 'sklearn'
+trying to download a downgraded version of scikit learn
+
+ReferFormer inference script: error: unrecognized arguments: big track on the road'
+
+issue with how they formatted example run code 
+
+
+from . import _imaging as core
+ImportError: DLL load failed: The specified module could not be found.
+
+reinstall pillow
+pip install --only-binary :all: pillow
+
+
+
+File "C:\Users\Zach\anaconda3\envs\r2vos37\lib\site-packages\pycocotools\mask.py", line 3, in <module>
+    import pycocotools._mask as _mask
+  File "pycocotools\\_mask.pyx", line 1, in init pycocotools._mask
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 88 from C header, got 80 from PyObject
+
+reinstalled numpy and pycoco tools
+
+
+ File "C:\Users\Zach\anaconda3\envs\r2vos37\lib\site-packages\urllib3\__init__.py", line 42, in <module>
+    "urllib3 v2.0 only supports OpenSSL 1.1.1+, currently "
+ImportError: urllib3 v2.0 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'OpenSSL 1.1.0i  14 Aug 2018'. See: https://github.com/urllib3/urllib3/issues/2168
+
+had to upgrade openssl - didn't work
+downgraded urllib3
+
+
+
+Traceback (most recent call last):
+  File "demo.py", line 240, in <module>
+    main(args)
+  File "demo.py", line 68, in main
+    sub_processor(0, args, args.demo_exp, frames, save_path_prefix)
+  File "demo.py", line 124, in sub_processor
+    imgs = torch.stack(imgs, dim=0).to(args.device) # [video_len, 3, h, w]
+RuntimeError: stack expects a non-empty TensorList
+
+no frames returned, issue with how path was being made in code, manually set demopath instead of depending on argument
+
+
+  File "C:\Users\Zach\anaconda3\envs\r2vos37\lib\site-packages\torch\nn\modules\conv.py", line 396, in _conv_forward
+    self.padding, self.dilation, self.groups)
+RuntimeError: cuDNN error: CUDNN_STATUS_INTERNAL_ERROR
+
+
+Verified wasn’t running out of memory, verified driver and CUDA versions were compatible, reinstalled cuDNN, nothing worked, started trying to implement on wsl
+
+
+
+
+
+trying on wsl:
+Driver:   Not Selected
+Toolkit:  Installed in /usr/local/cuda-11.7/
+
+Please make sure that
+ -   PATH includes /usr/local/cuda-11.7/bin
+ -   LD_LIBRARY_PATH includes /usr/local/cuda-11.7/lib64, or, add /usr/local/cuda-11.7/lib64 to /etc/ld.so.conf and run ldconfig as root
+
+To uninstall the CUDA Toolkit, run cuda-uninstaller in /usr/local/cuda-11.7/bin
+***WARNING: Incomplete installation! This installation did not install the CUDA Driver. A driver of version at least 515.00 is required for CUDA 11.7 functionality to work.
+To install the driver using this installer, run the following command, replacing <CudaInstaller> with the name of this run file:
+    sudo <CudaInstaller>.run --silent --driver
+
+
+(myenv) zach@Bob:~/37env$ sudo cuda_11.7.0_515.43.04_linux.run --silent --driver
+sudo: cuda_11.7.0_515.43.04_linux.run: command not found
+
+
+(myenv) zach@Bob:~/37env$ sudo ./cuda_11.7.0_515.43.04_linux.run --silent --driver
+ Failed to verify gcc version. See log at /var/log/cuda-installer.log for details.
+
+verified I already have gcc isntalled
+reinstalled CUDA toolkit and GCC still gave the same error
